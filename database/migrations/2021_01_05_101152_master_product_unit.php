@@ -14,7 +14,7 @@ class MasterProductUnit extends Migration
     public function up()
     {
         Schema::create('master_product_unit', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('UnitCode',3);
             $table->string('UnitName',20);
             $table->integer('UnitFactor');
@@ -27,6 +27,7 @@ class MasterProductUnit extends Migration
             //$table->string('WhoUPdate',100);
             //$table->date('DateUPdate');
             //$table->time('TimeUPdate');
+            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

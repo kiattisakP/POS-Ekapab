@@ -1,0 +1,119 @@
+html, body {
+    background-color:rgb(255, 255, 255);
+    color: #636b6f;
+    font-family: 'Sriracha', cursive;
+    height: 100vh;
+    margin: 0;
+}
+.full-height {
+    height: 100vh;
+}
+.flex-center {
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
+.position-ref {
+    position: relative;
+}
+.top-right {
+    position: absolute;
+    right: 10px;
+    top: 5px;
+}
+.content {
+    text-align: center;
+}
+.title {
+    color:rgb(58, 52, 57);
+    font-size: 50px;
+}
+.links > a {
+    color:rgb(243, 0, 203);
+    padding: 0 25px;
+    font-size: 25px;
+    font-weight: 200;
+    letter-spacing: .1rem;
+    text-decoration: none;
+    text-transform: uppercase; 
+    }
+.m-b-md {
+    margin-bottom: 30px;
+    align-self: center;
+}
+#div1 {
+    text-align: center;
+    display: inline-flex;
+    color:rgb(243, 0, 203);
+    
+}
+#div2 {
+    text-align: center;
+    display: inline-flex;
+    color:rgb(243, 0, 203);
+    size: 100px;
+}
+html, body {
+    background-color:rgb(255, 255, 255);
+    color: #636b6f;
+    font-family: 'Sriracha', cursive;
+    
+    height: 100vh;
+    margin: 0;
+}
+.card {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10%;
+    float: none;
+    margin-bottom: 0; 
+    max-width: 100%;
+    max-height: 100%;
+    left: 0;
+    right: 0;
+    top: 0;
+    display:flex;
+    vertical-align: middle;
+    border: 0 ;
+    
+}
+.card-header {
+    
+    padding: .75rem 1.25rem;
+    margin-bottom: 0;
+    background-color: rgba(245, 245, 245);
+    border-bottom: 1px solid rgba(245, 245, 245);
+}
+.card-body {
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 30px;
+    margin-bottom: 50px;
+
+}
+.back {
+    background: rgb(212, 211, 211);
+    width: 100%;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    justify-content: center;
+}
+.h3 {
+    background: -webkit-linear-gradient( #ff5858, #f5a4cb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+.custom {
+    width: 290px !important;
+}
+
+.custom1 {
+    width: 295px !important;
+}
+.p {
+    font-size: 14px;
+    background: -webkit-linear-gradient( #ff5858, #f5a4cb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}

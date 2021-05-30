@@ -7,29 +7,29 @@ use App\Product;
 use App\Barcode;
 use App\Unit;
 use App\HistoryProduct;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
 use Illuminate\Support\Facades\Auth;
+use Intervention\Image\Facades\Image;
 
 
 class ProductController extends Controller
 {
-    //public function index(Product $product){
+    
+    public function index(Request $request){
        
-        //$product = Product::when(request('search'), function($query){
-        //                return $query->where('PdtName','like','%'.request('search').'%');
-        //            })
-        //            ->orderBy('created_at','desc')
-        //            ->paginate(8);
+        $product = Product::when(request('search'), function($query){
+                        return $query->where('PdtSKUCode','like','%'.request('search').'%');
+                    })
+                    ->orderBy('created_at','desc')
+                    ->paginate(8);
 
-        //$barcode = Barcode::all();
-        //$product->barcodes()->attach($barcode);
-
-        //return view('product.index',compact('product'));
+        return view('product.index',compact('product'));
         
-    //}
-
+    }
 
 
     public function create(){
@@ -74,6 +74,9 @@ class ProductController extends Controller
                     'UnitName' => 'required',
                     'UnitFactor' => 'required',
 
+                    'image' => 'mimes:jpeg,jpg,png,gif|required|max:25000',
+                    
+
                 ]);
 
                 if($request->addQty){
@@ -86,34 +89,68 @@ class ProductController extends Controller
                 }
 
                 $product_id = Product::find($id);
-                //$Unit = Unit::find($id);
-                //$Barcode = Barcode::find($id);
+                $Unit_edit = Unit::find($id);
+                $Barcode_edit = Barcode::find($id);
+                
+                if($request->has('image')){
+                    $gambar = $request->image;
+                    $new_gambar = time().$gambar->getClientOriginalName();
+                    Image::make($gambar->getRealPath())->resize(null, 200, function ($constraint) {
+                        $constraint->aspectRatio();
+                    })->save(public_path('uploads/images/' . $new_gambar));
 
-                $product = [
-                    'PdtSKUCode' => $request->PdtSKUCode,
-                    'PdtName' => $request->PdtName,    
-                    'PdtNameOTH' => $request->PdtNameOTH,    
-                    'PdtStkQty' => $request->PdtStkQty,
-                    'PdtStkAmt' => $request->PdtStkAmt,
-                    'PdtVatType' => $request->PdtVatType,
-                    'PdtType' => $request->PdtType,
-                    'PdtGrpCode' => $request->PdtGrpCode,
-                    'PdtBndCode' => $request->PdtBndCode,
-                    'PdtSizeCode' => $request->PdtSizeCode,
-                    'PdtColorCode' => $request->PdtColorCode,
-                    'SplCode' => $request->SplCode,
-                    'GLAccNO' => $request->GLAccNO,
-                    'PdtAge' => $request->PdtAge,
-                    'UnitType' => $request->UnitType, 
+                    File::delete(public_path($product_id->image));
+
+
+                    $product = [
+                        'PdtSKUCode' => $request->PdtSKUCode,
+                        'PdtName' => $request->PdtName,    
+                        'PdtNameOTH' => $request->PdtNameOTH,    
+                        'PdtStkQty' => $request->PdtStkQty,
+                        'PdtStkAmt' => $request->PdtStkAmt,
+                        'PdtVatType' => $request->PdtVatType,
+                        'PdtType' => $request->PdtType,
+                        'PdtGrpCode' => $request->PdtGrpCode,
+                        'PdtBndCode' => $request->PdtBndCode,
+                        'PdtSizeCode' => $request->PdtSizeCode,
+                        'PdtColorCode' => $request->PdtColorCode,
+                        'SplCode' => $request->SplCode,
+                        'GLAccNO' => $request->GLAccNO,
+                        'PdtAge' => $request->PdtAge,
+                        'UnitType' => $request->UnitType, 
+                        
+                        'image' => 'uploads/images/'.$new_gambar,
+                        'user_id' => Auth::id()
+                    ];
+
                     
-                    'barcode_id' => 0,
-                    'unit_id' => 0,
-                    'user_id' => Auth::id()
-                ];
-
+                }
+                else{
+                    $product = [
+                        'PdtSKUCode' => $request->PdtSKUCode,
+                        'PdtName' => $request->PdtName,    
+                        'PdtNameOTH' => $request->PdtNameOTH,    
+                        'PdtStkQty' => $request->PdtStkQty,
+                        'PdtStkAmt' => $request->PdtStkAmt,
+                        'PdtVatType' => $request->PdtVatType,
+                        'PdtType' => $request->PdtType,
+                        'PdtGrpCode' => $request->PdtGrpCode,
+                        'PdtBndCode' => $request->PdtBndCode,
+                        'PdtSizeCode' => $request->PdtSizeCode,
+                        'PdtColorCode' => $request->PdtColorCode,
+                        'SplCode' => $request->SplCode,
+                        'GLAccNO' => $request->GLAccNO,
+                        'PdtAge' => $request->PdtAge,
+                        'UnitType' => $request->UnitType, 
+                            
+                        'user_id' => Auth::id(),
+                        'user_name' => Auth::user($id)->name,
+                        
+                    ];
+                }
                 $Barcode = [
                     'PdtSKUCode' => $request->PdtSKUCode,
-                    'PdtBarcode' => $product->PdtBarcode,
+                    'PdtBarcode' => $request->PdtBarcode,
                     'PdtSKURef' => $request->PdtSKURef,
                     'PdtUnitCode' => $request->PdtUnitCode,
                     'Price1' => $request->Price1,
@@ -121,23 +158,25 @@ class ProductController extends Controller
                     'Price3' => $request->Price3,
                     'Price4' => $request->Price4,
                     'Price5' => $request->Price5,
-                    'PdtAge' => $product->PdtAge,
-                    'UnitType' => $product->UnitType,  
+                    'PdtAge' => $request->PdtAge,
+                    'UnitType' => $request->UnitType,  
                     'user_id' => Auth::id(),
+                    'product_id' => $request->id,
                 ];
 
                 $Unit = [
-                    'UnitCode' => $product->UnitCode,
-                    'UnitName' => $request->UnitCode,
-                    'UnitFactor' => $request->UnitCode,
-                    'PdtAge' => $product->PdtAge,
-                    'UnitType' => $product->UnitType,
+                    'UnitCode' => $request->UnitCode,
+                    'UnitName' => $request->UnitName,
+                    'UnitFactor' => $request->UnitFactor,
+                    'PdtAge' => $request->PdtAge,
+                    'UnitType' => $request->UnitType,
                     'user_id' => Auth::id(),
+                    'product_id' => $request->id,
                 ];
 
                 $product_id->update($product);
-                //$Barcode->update($product);
-                //$Unit->update($product);
+                $Barcode_edit->update($Barcode);
+                $Unit_edit->update($Unit);
 
                 if($request->addQty){
                     HistoryProduct::create([
@@ -183,9 +222,13 @@ class ProductController extends Controller
                     'UnitCode' => 'required',
                     'UnitName' => 'required',
                     'UnitFactor' => 'required',
+
+                    'image' => 'mimes:jpeg,jpg,png,gif|required|max:25000',
+                    
                 ]);
 
-                
+                $gambar = $request->image;
+                $new_gambar = time().$gambar->getClientOriginalName();
 
                 $product = Product::create([
                     
@@ -205,10 +248,14 @@ class ProductController extends Controller
                     'PdtAge' => $request->PdtAge,
                     'UnitType' => $request->UnitType,   
 
-                    'barcode_id' => 0,
-                    'unit_id' => 0,
-                    'user_id' => Auth::id()
+                    'image' => 'uploads/images/'.$new_gambar,
+                    'user_id' => Auth::id(),
+                    'user_name' => Auth::user($id)->name,
                 ]);        
+
+                Image::make($gambar->getRealPath())->resize(null, 200, function ($constraint) {
+                    $constraint->aspectRatio();
+                })->save(public_path('uploads/images/' . $new_gambar));
 
                 HistoryProduct::create([
                     'product_id' => $product->id,
@@ -231,22 +278,24 @@ class ProductController extends Controller
                     'PdtAge' => $product->PdtAge,
                     'UnitType' => $product->UnitType,  
                     'user_id' => Auth::id(),
+                    'product_id' => $product->id,
                 ]);
 
                 Unit::create([
                     'UnitCode' => $request->UnitCode,
-                    'UnitName' => $request->UnitCode,
-                    'UnitFactor' => $request->UnitCode,
+                    'UnitName' => $request->UnitName,
+                    'UnitFactor' => $request->UnitFactor,
                     'PdtAge' => $product->PdtAge,
                     'UnitType' => $product->UnitType,
                     'user_id' => Auth::id(),
+                    'product_id' => $product->id,
                 ]);
 
-                $barcode = Barcode::find($id);
-                $product->barcodes()->attach($barcode);
+                //$barcode = Barcode::find($id);
+                //$product->barcodes()->attach($barcode);
 
-                $unit = Unit::find($id);
-                $product->units()->attach($unit);
+                //$unit = Unit::find($id);
+                //$product->units()->attach($unit);
 
                 $message = 'Data Berhasil di simpan';
 
@@ -261,41 +310,29 @@ class ProductController extends Controller
     }
 
 
-    public function index(Product $barcode){
-       
-        $product = Product::when(request('search'), function($query){
-                        return $query->where('PdtName','like','%'.request('search').'%');
-                    })
-                    ->orderBy('created_at','desc')
-                    ->paginate(8);
-
-        //$product = Product::find(1);
-        //$barcode->barcodes()->attach($product);
-
-        return view('product.index',compact('product'));
-        
-    }
 
     public function view($id){
 
-        $data[] = "";
-        $data['error'] = "";
-        $data['product'] = Product::where('id', $id)->first();
-        //$data['Barcode'] = Barcode::where('id', $id)->first();
-
-        return view('viewpdt.view_product',$data);
+        $product = Product::find($id);
+        $barcode = Barcode::with('product')->find($id);
+        $unit = Unit::with('product')->find($id);
+        return view('viewpdt.view_product',compact('product','barcode','unit'));
     }
 
     public function edit($id){
         
         $product = Product::find($id);
         $history = HistoryProduct::where('id',$id)->orderBy('created_at','desc')->get();
-        return view('viewpdt.edit_product',compact('product','history'));
+        $barcode = Barcode::with('product')->find($id);
+        $unit = Unit::with('product')->find($id);
+        return view('viewpdt.edit_product',compact('product','history','barcode','unit'));
     }
 
     public function delete($id){
         
         Product::find($id)->delete();
+        Barcode::find($id)->delete();
+        Unit::find($id)->delete();
         return redirect()->route('products.index');
     }
 
@@ -306,6 +343,9 @@ class ProductController extends Controller
         DB::beginTransaction();
 
         try{
+        $product = Product::find($id);
+        $product->delete();
+        File::delete(public_path($product->image)); 
 
         DB::commit();
         return redirect()->route('products.index')->with('success','Product berhasil dihapus');                             

@@ -19,7 +19,8 @@
                                         type="text" 
                                         class="form-control @error('name') is-invalid @enderror" 
                                         name="name" 
-                                        placeholder="ชื่อ"
+                                        placeholder="ชื่อ-สกุล"
+                                        size= "40px"
                                         value="{{ old('name') }}" 
                                         required autocomplete="name" autofocus>
                                 @error('name')
@@ -34,7 +35,8 @@
                                 <input id="email" 
                                         type="email" 
                                         class="form-control @error('email') is-invalid @enderror" 
-                                        name="email" 
+                                        name="email"
+                                        size= "40px" 
                                         placeholder="emill"
                                         value="{{ old('email') }}" 
                                         required autocomplete="email">
@@ -50,6 +52,7 @@
                             <div class="col-md-18">
                                 <input id="username" 
                                         type="text" 
+                                        size= "40px"
                                         class="form-control @error('username') is-invalid @enderror" 
                                         name="username" 
                                         placeholder="รหัสผู้ใช้"
@@ -67,6 +70,7 @@
                             <div class="col-md-18">
                                 <input id="password" 
                                         type="password" 
+                                        size= "40px"
                                         class="form-control @error('password') is-invalid @enderror" 
                                         name="password" 
                                         required autocomplete="new-password"
@@ -82,7 +86,8 @@
                             <div class="col-md-18">
                                 <input id="password-confirm" 
                                         type="password" 
-                                        class="form-control" 
+                                        class="form-control"
+                                        size= "40px" 
                                         name="password_confirmation" 
                                         placeholder="ยืนรหัสผ่าน"
                                         required autocomplete="new-password">
@@ -93,9 +98,6 @@
                                     <button type="submit" class="btn text-white " style="background: linear-gradient(to right, #ff5858, #f857a6);">
                                         <i class="fa fa-user-plus" aria-hidden="true"></i>&nbsp;สมัครสมาชิก
                                     </button>   
-                                    <a class="nav-link" 
-                                        href="{{ route('login') }}">{{ __('เข้า') }}
-                                    </a>
                             </div>
                         </div>
                     </form>

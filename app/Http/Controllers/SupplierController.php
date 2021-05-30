@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use File;
 use App\Sup;
+use App\SupCon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\URL;
@@ -49,11 +50,18 @@ class SupplierController extends Controller
                     'SplLimit' => 'required',
                     'SplAmt' => 'required',
                     'PdtAge' => 'required',
-                    'UnitType' => 'required', 
+                    'UnitType' => 'required',
+
+                    'ContectName' => 'required',
+                    'ContectTel' => 'required',
+                    'ContectEmail' => 'required',
+                    'ContectOth1' => 'required',
+                    'ContectOth2' => 'required',
                 ]);
 
 
                 $Supplier_edit = Sup::find($id);
+                $Supplier_con = SupCon::find($id);
 
                 $Supplier = [
                     'SplCode' => $request->SplCode,
@@ -71,10 +79,22 @@ class SupplierController extends Controller
                     'SplAmt' => $request->SplAmt,
                     'PdtAge' => $request->PdtAge,
                     'UnitType' => $request->UnitType,        
-                    'user_id' => Auth::id()
+                    'user_id' => Auth::id(),
+                ];
+
+                $SupCon = [
+                    'SplCode' => $request->SplCode,
+                    'ContectName' => $request->ContectName,    
+                    'ContectTel' => $request->ContectTel,
+                    'ContectEmail' => $request->ContectEmail,
+                    'ContectOth1' => $request->ContectOth1,
+                    'ContectOth2' => $request->ContectOth2,
+                    'Sup_id' => $request->id,
+                    'user_id' => Auth::id(),
                 ];
 
                 $Supplier_edit->update($Supplier);
+                $Supplier_con->update($SupCon);
 
                 $message = 'Data Berhasil di update';
                 
@@ -97,7 +117,13 @@ class SupplierController extends Controller
                     'SplLimit' => 'required',
                     'SplAmt' => 'required',
                     'PdtAge' => 'required',
-                    'UnitType' => 'required', 
+                    'UnitType' => 'required',
+                    
+                    'ContectName' => 'required',
+                    'ContectTel' => 'required',
+                    'ContectEmail' => 'required',
+                    'ContectOth1' => 'required',
+                    'ContectOth2' => 'required',
                 ]);
 
                 $Supplier = Sup::create([
@@ -120,6 +146,17 @@ class SupplierController extends Controller
                     'user_id' => Auth::id()
                 ]);        
 
+                SupCon::create([
+                    'SplCode' => $Supplier->SplCode,
+                    'ContectName' => $request->ContectName,    
+                    'ContectTel' => $request->ContectTel,
+                    'ContectEmail' => $request->ContectEmail,
+                    'ContectOth1' => $request->ContectOth1,
+                    'ContectOth2' => $request->ContectOth2,
+                    'Sup_id' => $Supplier->id,
+                    'user_id' => Auth::id(),
+                ]);
+
                 $message = 'Data Berhasil di update';
 
                 DB::commit();
@@ -134,22 +171,22 @@ class SupplierController extends Controller
 
     public function view($id){
 
-        $data[] = "";
-        $data['error'] = "";
-        $data['sup'] = Sup::where('id', $id)->first();
-
-        return view('supplier.view_sup',$data);
+        $sup = Sup::find($id);
+        $supcon = SupCon::with('sups')->find($id);
+        return view('supplier.view_sup',compact('sup','supcon'));
     }
 
     public function edit($id){
         
         $supplier = Sup::find($id);
-        return view('supplier.edit_sup',compact('supplier'));
+        $supcon = SupCon::with('sups')->find($id);
+        return view('supplier.edit_sup',compact('supplier','supcon'));
     }
 
     public function delete($id){
         
         Sup::find($id)->delete();
+        SupCon::find($id)->delete();
         return redirect()->route('suppliers.index');
     }
 

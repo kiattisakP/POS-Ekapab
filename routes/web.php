@@ -45,8 +45,6 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get("/edit_sup/{id}", "SupplierController@edit")->name("edit_sup");
     Route::get("/delete_sup/{id}", "SupplierController@delete")->name("delete_sup");
 
-    Route::get('products/{product}', 'ProductController@index')->name('product.index');
-
 });
 
 

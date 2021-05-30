@@ -14,7 +14,7 @@ class MasterProductBarcode extends Migration
     public function up()
     {
         Schema::create('master_product_barcode', function (Blueprint $table) {
-            $table->increments('id');
+            $table->id();
             $table->string('PdtSKUCode',20);
             $table->string('PdtBarcode',20);
             $table->string('PdtSKURef',20);
@@ -33,6 +33,7 @@ class MasterProductBarcode extends Migration
             //$table->string('WhoUPdate',100);
             //$table->date('DateUPdate');
             //$table->time('TimeUPdate');
+            $table->unsignedBigInteger('product_id');
             $table->unsignedBigInteger('user_id');
             $table->timestamps();
         });

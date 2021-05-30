@@ -14,6 +14,7 @@ class MasterSupplierContact extends Migration
     public function up()
     {
         Schema::create('master_supplier_contact', function (Blueprint $table) {
+            $table->id();
             $table->string('SplCode',10);
             $table->string('ContectName',100);
             $table->string('ContectTel',100);
@@ -21,12 +22,15 @@ class MasterSupplierContact extends Migration
             $table->string('ContectOth1',100);
             $table->string('ContectOth2',100);
             
-            $table->string('WhoINS',100);
-            $table->date('DateINS');
-            $table->time('TimeINS');
-            $table->string('WhoUPdate',100);
-            $table->date('DateUPdate');
-            $table->time('TimeUPdate');
+            //$table->string('WhoINS',100);
+            //$table->date('DateINS');
+            //$table->time('TimeINS');
+            //$table->string('WhoUPdate',100);
+            //$table->date('DateUPdate');
+            //$table->time('TimeUPdate');
+            $table->unsignedBigInteger('Sup_id');
+            $table->unsignedBigInteger('user_id');
+            $table->timestamps();
         });
     }
 

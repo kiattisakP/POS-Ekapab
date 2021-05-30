@@ -15,4 +15,7 @@ class ProductTranscation extends Model
         return $this->belongsTo(Product::class);
     }
    
+    public function barcodes(){
+        return $this->belongsTo(\App\Barcode::class);
+    }
 }

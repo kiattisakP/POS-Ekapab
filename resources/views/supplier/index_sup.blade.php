@@ -3,23 +3,20 @@
 <div class="container">
     <div class="row justify-content-center">
         <div class="col-md-12">
-            <div class="card" style="min-height: 85vh">
+            <div class="card " style="min-height: 85vh; ">
                 <div class="card-header bg-white">
                     <form action="{{ route('suppliers.index') }}" method="get">
                         <div class="row">  
-                            <div class="col">
-                            </div>
-                            <div class="col">
+                            <div class="col"><h4 class="font-weight-bold">Supplier</h4></div>
+                            <div class="col" style="width: 50px;">
                                 <input type="text" 
                                         name="search"
+                                        style="width: 300px;"
                                         class="form-control form-control-sm col-sm-12 float-right"
                                         placeholder="ค้นหา" 
                                         onblur="this.form.submit()">
                             </div>
-                            <a href="{{ url('/suppliers/create')}}"
-                                class="btn btn-sm-2 ml-auto text-white" style="background: linear-gradient(to right, #ff5858, #f857a6);"> ค้นหาสินค้า
-                            </a>
-
+                            
                         </div>
                     </form>
                 </div>
@@ -28,44 +25,62 @@
                                 <thead>
                                     <div class="row">
                                         <hr>
-                                        <h4 class="font-weight-bold p-2">Supplier</h4>
                                         <div class="col d-flex">
                                                 <a href="{{ url('/suppliers/create')}}"
-                                                    class="btn btn-sm-2 ml-auto text-white"  style="background: linear-gradient(to right, #ff5858, #f857a6);"> Add Supplier
+                                                    class="btn btn-sm-2 ml-auto text-white"  style="background: linear-gradient(to right, #ff5858, #f857a6);"> 
+                                                    <i class="fa fa-plus" aria-hidden="true"></i>&nbsp;Add Supplier
                                                 </a>
                                             </div>
                                     </div>
                                     
                                     <tr style="text-align:center">
-                                        
-                                        <th>SplCode</th>
-                                        <th>SplName</th>
-                                        <th>SplNameOTH</th>
-                                        <th>SplAddress1</th>
-                                        <th>SplAddress2</th>
-                                        <th>วันที่เพิ่ม</th>
-                                        <th>วันที่อัพเดต</th>
-                                        <th>ACTIONS</th>
+                                        <th id="f14">SplCode</th>
+                                        <th id="f14">Name</th>
+                                        <th id="f14">Address</th>
+                                        <th id="f14">Tel</th>
+                                        <th id="f14">Emill</th>
+                                        <th id="f14">Date/Time</th>
+                                        <th id="f14"> </th>    
                                     </tr>
                                 </thead>
                                 <tbody>
                                     @if(count($Supplier))
                                         @foreach($Supplier as $sup)
-                                            <tr>
-                                                <td>{{ $sup->SplCode }}</td>
-                                                <td>{{ $sup->SplName}}</td>
-                                                <td>{{ $sup->SplNameOTH}}</td>
-                                                <td>{{ $sup->SplAddress1 }}</td>
-                                                <td>{{ $sup->SplAddress2 }}</td>
-                                                <td>{{ $sup->created_at }}</td>
-                                                <td>{{ $sup->updated_at }}</td>
-                                                <td>
+                                            <tr style="text-align:center">
+                                                
+                                                <td id="f16">{{ $sup->SplCode }}</td>
+                                                <td id="f16">{{ $sup->SplName}}</td>
+                                                <td id="f16">{{ $sup->SplAddress1 }}</td>
+                                                <td id="f16">{{ $sup->SplTel}}</td>
+                                                <td id="f16">{{ $sup->SplEmail}}</td>
+                                                <td id="f16">{{ $sup->created_at }}</td>
+                                                <td id="f16">
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a type="button" href="{{ route('view_sup', $sup->id) }}" class="btn btn-success"  title="view PRODUCT"><i class="fa fa-eye" aria-hidden="true"></i></a>
-                                                        <a type="button" href="{{ route('suppliers.edit', $sup->id) }}" class="btn btn-success"  title="edit PRODUCT"><i class="fa fa-file" aria-hidden="true"></i></a>
-                                                        <a type="button" href="{{ route('delete_sup', $sup->id) }}" class="btn btn-danger"  title="DELETE PRODUCT"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                                        <a type="button" 
+                                                            href="{{ route('view_sup', $sup->id) }}"
+                                                            class="btn btn-success"  
+                                                            style="border: 0"
+                                                            title="view Supplier">
+                                                                <i class="fa fa-eye" aria-hidden="true"></i>
+                                                        </a>
+                                                        <a type="button" 
+                                                            href="{{ route('suppliers.edit', $sup->id) }}"
+                                                            class="btn btn-success"
+                                                            style="border: 0"  
+                                                            title="edit Supplier">
+                                                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                                                        </a>
+                                                        <a type="button" 
+                                                            href="{{ route('delete_sup', $sup->id) }}"  
+                                                            class="btn btn-danger" 
+                                                            style="border: 0" 
+                                                            title="DELETE Supplier">
+                                                            
+                                                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                                        </a>
                                                         </div>
                                                 </td>
+                                                
                                             </tr>
                                         @endforeach
                                 </tbody>

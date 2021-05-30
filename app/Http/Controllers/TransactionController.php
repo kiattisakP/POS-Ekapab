@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Barcode;
 use App\Product;
 use App\HistoryProduct;
 use App\ProductTranscation;
@@ -55,7 +56,7 @@ class TransactionController extends Controller
                 $cart[] = [
                     'rowId' => $row->id,
                     'name' => $row->name,
-                    'qty' => $row->quantity,
+                    'PdtStkQty' => $row->quantity,
                     'pricesingle' => $row->price,
                     'price' => $row->getPriceSum(),
                     'created_at' => $row->attributes['created_at'],
@@ -83,13 +84,14 @@ class TransactionController extends Controller
     }
 
     public function addProductCart($id){
-        $product = Product::find($id);      
+        $product = Product::find($id);
+        $barcode = Barcode::with('product')->find($id);
                 
         $cart = \Cart::session(Auth()->id())->getContent();        
         $cek_itemId = $cart->whereIn('id', $id);  
       
         if($cek_itemId->isNotEmpty()){
-            if($product->qty == $cek_itemId[$id]->quantity){
+            if($product->PdtStkQty == $cek_itemId[$id]->quantity){
                 return redirect()->back()->with('error','jumlah item kurang');
             }else{
                 \Cart::session(Auth()->id())->update($id, array(
@@ -100,7 +102,7 @@ class TransactionController extends Controller
              \Cart::session(Auth()->id())->add(array(
             'id' => $id,
             'name' => $product->name,
-            'price' => $product->price,
+            'price' => $barcode->price1,
             'quantity' => 1, 
             'attributes' => array(
                 'created_at' => date('Y-m-d H:i:s')
@@ -142,20 +144,20 @@ class TransactionController extends Controller
             foreach($filterCart as $cart){
                 $product = Product::find($cart['id']);
                 
-                if($product->qty == 0){
+                if($product->PdtStkQty == 0){
                     return redirect()->back()->with('errorTransaksi','jumlah pembayaran gak valid');  
                 }
 
                 HistoryProduct::create([
                     'product_id' => $cart['id'],
                     'user_id' => Auth::id(),
-                    'qty' => $product->qty,
+                    'PdtStkQty' => $product->PdtStkQty,
                     'type' => $product->type,
                     'qtyChange' => -$cart['quantity'],
                     'tipe' => 'decrease from transaction'
                 ]);
                 
-                $product->decrement('qty',$cart['quantity']);
+                $product->decrement('PdtStkQty',$cart['quantity']);
             }
             
             $id = IdGenerator::generate(['table' => 'transcations', 'length' => 10, 'prefix' =>'INV-', 'field' => 'invoices_number']);
@@ -172,7 +174,7 @@ class TransactionController extends Controller
                 ProductTranscation::create([
                     'product_id' => $cart['id'],
                     'invoices_number' => $id,
-                    'qty' => $cart['quantity'],
+                    'PdtStkQty' => $cart['quantity'],
                 ]);                
             }
 
@@ -220,7 +222,7 @@ class TransactionController extends Controller
         $cart = \Cart::session(Auth()->id())->getContent();        
         $cek_itemId = $cart->whereIn('id', $id); 
 
-        if($product->qty == $cek_itemId[$id]->quantity){
+        if($product->PdtStkQty == $cek_itemId[$id]->quantity){
             return redirect()->back()->with('error','jumlah item kurang');
         }else{
             \Cart::session(Auth()->id())->update($id, array(
@@ -245,4 +247,3 @@ class TransactionController extends Controller
 
     
 }
-

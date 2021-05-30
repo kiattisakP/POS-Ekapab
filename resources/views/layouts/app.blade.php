@@ -6,7 +6,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <title>POS | Point Of Sale for Ekapab</title>
-
+    
     <script type="text/javascript">
         document.write(unescape('%3c%6c%69%6e%6b%20%72%65%6c%20%3d%20%22%69%63%6f%6e%22%20%68%72%65%66%20%3d%22%69%6d%67%2f%6c%6f%67%6f%2e%70%6e%67%22%20%74%79%70%65%20%3d%20%22%69%6d%61%67%65%2f%70%6e%67%22%3e'));
     </script>
@@ -27,55 +27,15 @@
     <link rel="https://cdnjs.cloudflare.com/ajax/libs/animate.css/3.5.2/animate.min.css"rel="stylesheet">
 
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    
+    
+
        
-    <style>
-        .affix {
-            top: 0;
-            width: 100%;
-            z-index: 9999 !important;
-        }
-        .affix + .container-fluid {
-            padding-top: 70px;
-        }
-        html, body {
-                background: linear-gradient(to right, #fcf1f3, #fcf8f9);
-                color: #636b6f;
-                font-family: 'Sriracha', cursive;
-                font-weight: 200;
-                height: 100vh;
-                margin: 0;
-            }
-        table {
-            counter-reset: tableCount;     
-        }
-        .counterCell:before {              
-            content: counter(tableCount); 
-            counter-increment: tableCount; 
-        }
-        .b1 {
-            float: left;
-            text-align: center;
-        }
-        .h{
-            font-size: 12px ;
-            color: darkgray;
-        }
-        .navbar {
-            border: 0;
-            border-radius: 0;
-            background: linear-gradient(to right, #ff5858, #f857a6);
-        }
-        .navbar-brand {
-            max-height: 50px;
-            width: auto;
-            background: transparent !important;
-            font-size: 20px;
-            transition: 0.2s ease-in-out;
-        }
-        </style>
+    <!--Style CSS Pubilc -->
+    <link rel="stylesheet" href="{{asset('css/styleapp.css')}}">
+
     @stack('style')
 </head>
-
 <body>
     <header class="navbar navbar-expand navbar-dark flex-column flex-md-row bd-navbar" style="background: linear-gradient(to right, #ff5858, #f857a6); font-size: 14px;">
             <div class="container-fluid">
@@ -85,7 +45,7 @@
                             <a class="navbar-brand"
                                 style="font-size: 20px"
                                 href="{{url('transcation')}}">
-                                <img src="/img/logo2.png" width="30px" height="30px">&nbsp;ระบบจัดการขายหน้าร้าน
+                                <img src="/img/logo2.png" width="30px" height="30px">&nbsp;เอกภาพอินเตอร์อิเล็คตริก
                             </a>
                     </li>
                     <li class="nav-item dropdown">
@@ -103,6 +63,7 @@
                             <a class="dropdown-item" 
                                 href="{{url('stock')}}"><i class="fa fa-th"></i>&nbsp;สต๊อกสินค้า
                             </a>
+                            
                         </div>
                     </li>
                     <li class="nav-item dropdown">
@@ -132,12 +93,12 @@
                     <ul class="navbar-nav ml-auto">
                         <li class="nav-item">
                             <a class="nav-link font-weight-bolder" 
-                                href="{{url('suppliers')}}" target="_blank">Supplier
+                                href="{{ url('suppliers')}}">Supplier
                             </a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link font-weight-bolder" 
-                                href="{{url('dashboard')}}" target="_blank">Dashboard
+                                href="#" target="_blank">Dashboard
                             </a>
                         </li>
                         @guest
@@ -193,6 +154,7 @@
         </main>
 
     </div>
+    
 </body>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.4/umd/popper.min.js"></script>

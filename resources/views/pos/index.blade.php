@@ -32,13 +32,6 @@
                                     <option value="อาหารเสริมเเละผลิตภัณฑ์สุขภาพ">อาหารเสริมเเละผลิตภัณฑ์สุขภาพ</option>
                                     <option value="เยลลี่ พุดดิ้ง มาร์ชเมลโล่">เยลลี่ พุดดิ้ง มาร์ชเมลโล่</option>
                                 </select>
-                                <script>
-                                    function myFunction() {
-                                      var x = document.getElementById("mySelect").value;
-                                      document.getElementById("demo").innerHTML = "You selected: " + x;
-                                    }
-                                </script>
-                                
                             </div>
                             <div class="col">
                                 <input type="text" 
@@ -55,42 +48,34 @@
                 <div class="card-body">
                     <div class="row min-height:80vh">
                         @foreach ($products as $product)
-                            <div style="width: 16.66%;border:1px solid rgb(243, 243, 243)" class="mb-4">
-                                <div class="productCard">
-                                    <div class="view overlay">
-                                        <form action="{{url('/transcation/addproduct', $product->id)}}" method="POST">
-                                            @csrf
-                                                @if($product->qty == 0)
+                            <div class="mb-4" style="width: 16.66%; border:1px solid rgb(243, 243, 243)" >
+                                <div class="productCard" style="text-align: center;">
+                                        <div class="view overlay">
+                                            <form action="{{url('/transcation/addproduct', $product->id)}}" method="POST">
+                                                @csrf                                      
                                                     <img class="card-img-top gambar" 
-                                                        src="{{ $product->PdtName}}"
-                                                        alt="ไม่มีภาพ">
-                                                    <button class="btn btn-primary btn-sm cart-btn disabled">
-                                                        <i class="fa  fa-cart-plus"></i>
-                                                    </button>
-                                                @else
-                                                <img class="card-img-top gambar" 
-                                                        src="{{ $product->PdtName }}"
-                                                        alt="ไม่มีภาพ" style="cursor: pointer"
-                                                        onclick="this.closest('form').submit();return false;">
-                                                <button type="submit" class="btn btn-primary btn-sm cart-btn">
-                                                    <i class="fa fa-cart-plus"></i>
-                                                </button>
-                                                @endif   
-                                        </form>                               
-                                    </div>
-                                    <div class="card-body">
-                                        <label class="card-text text-center font-weight-bold"style="text-transform: capitalize;">
-                                            {{ Str::words($product->name,4) }} 
-                                        </label>
+                                                            src="{{ $product->image }}"
+                                                            alt="ไม่มีภาพ" style="cursor: pointer"
+                                                            onclick="this.closest('form').submit();return false;">
+                                            </form>                               
+                                        </div>
+                                            <h6 class="card-text text-center font-weight-bold" >
+                                                {{ Str::words($product->PdtName) }} 
+                                                 
+                                            </h6>
+                                            <h6 class="card-text text-center font-weight-bold" >
+                                            {{ Str::words($product->PdtNameOTH) }}
+                                            </h6>
                                         <p class="card-text text-center"> 
                                             {{ number_format($product->price,2,'.',',') }} บาท
                                         </p>
-                                    </div>
                                 </div>
                             </div>
                         @endforeach
                     </div>
                 </div>
+                
+
                 <div>
                     {{ $products->links() }}
                 </div>
@@ -196,25 +181,25 @@
                         <div class="col-sm-4">
                             <form action="{{ url('/transcation/clear') }}" method="POST">
                                 @csrf
-                                <button class="btn btn-info btn-lg btn-block" 
-                                        style="padding:1rem!important"
+                                <button class="btn btn-info btn-lg btn-block " 
+                                        style="padding:1rem!important; border:0;"
                                         onclick="return confirm('คุณต้องการที่จะยกเลิกสินค้าหรือไม่');"
                                         type="submit"> 
-                                        <i class="fa fa-window-close " aria-hidden="true"></i>&nbsp;Clear
+                                        <i class="fa fa-window-close " aria-hidden="true"></i>&nbsp;ยกเลิก
                                 </button>
                             </form>
                         </div>
                         <div class="col-sm-4">
                             <a class="btn btn-primary btn-lg btn-block"
-                                style="padding:1rem!important" 
+                                style="padding:1rem!important; border:0;" 
                                 href="{{url('/transcation/history')}}" 
                                 target="_blank">
                                 <i class="fa fa-history" aria-hidden="true"></i> &nbsp;ประวัติ
                             </a>
                         </div>
                         <div class="col-sm-4">
-                            <button class="btn btn-success  btn-block" 
-                                    style="padding:1rem!important; font-family: 'Sriracha', cursive;"
+                            <button class="btn btn-success btn-lg btn-block" 
+                                    style="padding:1rem!important;  border:0;"
                                     data-toggle="modal" 
                                     data-target="#fullHeightModalRight">
                                     <i class="fa fa-money" aria-hidden="true"></i>&nbsp;จ่าย

@@ -1,25 +1,26 @@
 <?php
 
 namespace App;
-
+use App\Unit;
+use App\Barcode;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Eloquent\Model;
-
 class Product extends Model
 {
-    //demi keamanan kalian harusnya ubah ini ke fillable ya
     protected $guarded = [];
     protected $table = 'master_product_sku';
     protected $primaryKey = 'id';
 
+
     public function barcodes(){
-        return $this->belongsToMany(Barcode::class,'barcode_id','id');
+        return $this->hasMany(\App\Barcode::class);
     }
 
     public function units(){
-        return $this->belongsToMany(Unit::class,'unit_id','id');
+        return $this->hasMany(\App\Unit::class);
     }
 
-    public function user(){
+    public function user($id){
         return $this->belongsTo(User::class);
     }
 
